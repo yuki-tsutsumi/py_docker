@@ -2,6 +2,14 @@
 up: ## alias docker-compose up -d
 	docker-compose up -d
 
+.PHONY: dev
+dev: ## alias docker-compose up
+	docker-compose up
+
+.PHONY: install
+install: ## alias docker-compose up -d --build
+	docker-compose up -d --build
+
 .PHONY: ps
 ps: ## alias docker-compose ps
 	docker-compose ps
