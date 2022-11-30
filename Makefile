@@ -9,3 +9,7 @@ ps: ## alias docker-compose ps
 .PHONY: stop
 stop: ## alias docker-compose stop
 	docker-compose stop
+
+.PHONY: kvs
+kvs: ## Attach a kvs container.
+	docker compose exec kvs redis-cli

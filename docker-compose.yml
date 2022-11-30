@@ -8,3 +8,18 @@ services:
     build: .
     ports:
       - 8080:8080
+    depends_on:
+      - kvs
+
+  kvs:
+    image: redis:7.0.5-alpine
+    environment:
+      TZ: 'Asia/Tokyo'
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_store:/data"
+    tty: true
+
+volumes:
+  redis_store:
