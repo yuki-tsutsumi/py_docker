@@ -1,7 +1,5 @@
 from typing import Union
-import redisService
-from pydantic import BaseModel
-
+from apiUtil import ApiUtil
 from fastapi import FastAPI
 
 app = FastAPI()
@@ -15,16 +13,8 @@ def read_root():
 def read_item(item_id: int, q: Union[str, None] = None):
     return {"item_id": item_id, "q": q}
 
-class RedisValue(BaseModel):
-    key: str
-    value: str
-
-@app.post("/redis/add")
-def sample_redis(body: RedisValue):
-    redisService.setRedis(body)
-    return {"status": "ok"}
-
-@app.get("/redis/show/{key}")
-def sample_redis(key: str):
-    r = redisService.getRedis(key)
-    return {"redis": r}
+@app.post("/activate")
+def get_activate():
+    newActivate = ApiUtil()
+    accessKey = newActivate.activate()
+    return {"access_key": accessKey}
