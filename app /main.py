@@ -1,6 +1,6 @@
-from typing import Union
+from typing import Union,Optional
 from apiUtil import ApiUtil
-from fastapi import FastAPI
+from fastapi import FastAPI,Cookie
 
 app = FastAPI()
 
@@ -14,7 +14,7 @@ def read_item(item_id: int, q: Union[str, None] = None):
     return {"item_id": item_id, "q": q}
 
 @app.post("/activate")
-def get_activate():
+def get_activate(accesskey: Optional[str] = Cookie(None)):
     newActivate = ApiUtil()
-    accessKey = newActivate.activate()
-    return {"access_key": accessKey}
+    accessKeyVal = newActivate.activate(accesskey)
+    return {"access_key": accessKeyVal}
