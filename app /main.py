@@ -1,9 +1,12 @@
 from typing import Union,Optional
 from apiUtil import ApiUtil
 from fastapi import FastAPI,Cookie
-
+from middleware import AuthActivateMiddleware
 app = FastAPI()
 
+# ミドルウェアは作ることがができたが、ルーティングを変更できず、activateに
+# ミドルウェアが走ってしまう。
+# app.add_middleware(AuthActivateMiddleware)
 
 @app.get("/")
 def read_root():

@@ -11,7 +11,7 @@ class ApiUtil:
     accessKey = None
 
     def activate(self,cookieVal):
-        if self.getAccessKey(cookieVal) and self.getRedis():
+        if self.getAccessKey(cookieVal) and self.getRedis(cookieVal):
             raise HTTPException(status_code=status.HTTP_200_OK,detail=f"USER_ALREADY_ACTIVATED ")
         accessKey = str(uuid.uuid4())
         redisVal = {'id':''}
@@ -34,8 +34,8 @@ class ApiUtil:
         self.kvs.expire(key, expire)
 
     # Redisから情報を取得する
-    def getRedis(self):
-        key = self.REDIS_KEY_ID + '::' + self.accessKey
+    def getRedis(self,cookieVal):
+        key = self.REDIS_KEY_ID + '::' + self.getAccessKey(cookieVal)
         value = self.kvs.get(key)
         if value:
             self.kvs.expire(key, self.EXPIRE) 
