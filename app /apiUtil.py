@@ -1,7 +1,7 @@
 import uuid
 import json
 import redis
-
+from fastapi import HTTPException,status
 class ApiUtil:
 
     kvs = redis.Redis(host='kvs', port=6379, db=0)
@@ -12,8 +12,7 @@ class ApiUtil:
 
     def activate(self,cookieVal):
         if self.getAccessKey(cookieVal) and self.getRedis(self.REDIS_KEY_ID):
-            return "already" #Exceptionを投げたい
-
+            raise HTTPException(status_code=status.HTTP_200_OK,detail=f"USER_ALREADY_ACTIVATED ")
         accessKey = str(uuid.uuid4())
         redisVal = {'id':''}
         self.setAccessKey(accessKey)
