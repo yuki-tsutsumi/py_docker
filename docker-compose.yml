@@ -21,5 +21,18 @@ services:
       - redis_store:/data"
     tty: true
 
+  minio:
+    image: quay.io/minio/minio:latest
+    container_name: minio
+    environment:
+      MINIO_ROOT_USER: root
+      MINIO_ROOT_PASSWORD: password
+    command: server --console-address ":9001" /data
+    volumes:
+    - ./minio_data:/export  # MinIOストレージの永続化
+    ports:
+      - 9000:9000
+      - 9001:9001
+
 volumes:
   redis_store:
