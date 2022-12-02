@@ -2,3 +2,4 @@ fastapi
 uvicorn
 redis
 python-multipart
+boto3
