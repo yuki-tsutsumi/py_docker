@@ -63,3 +63,23 @@ async def create_upload_file_boto3(file: UploadFile):
 
     return {"filename": file.filename,
             "contents": contents}
+
+@app.post("/uploadfile/minio")
+async def create_upload_file_boto3(file: UploadFile):
+    contents = await file.read()
+
+    # minioに接続
+    s3 = Minio(
+        endpoint='minio:9000',
+        access_key='root', #docker-compose:id
+        secret_key='password', # docker-compose:pass,
+        secure=False
+    )
+    found = s3.bucket_exists("sample")
+    if not found:
+       s3.make_bucket("sample")
+
+    s3.fput_object("sample", "sample.json","./sample.json",)
+
+    return {"filename": file.filename,
+            "contents": contents}

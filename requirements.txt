@@ -2,4 +2,5 @@ fastapi
 uvicorn
 redis
 python-multipart
+minio
 boto3
