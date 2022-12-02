@@ -1,6 +1,6 @@
 from typing import Union,Optional
 from apiUtil import ApiUtil
-from fastapi import FastAPI,Cookie
+from fastapi import FastAPI,Cookie, File, UploadFile
 
 app = FastAPI()
 
@@ -18,3 +18,14 @@ def get_activate(accesskey: Optional[str] = Cookie(None)):
     newActivate = ApiUtil()
     accessKeyVal = newActivate.activate(accesskey)
     return {"access_key": accessKeyVal}
+
+@app.post("/files")
+async def create_file(file: bytes = File()):
+    return {"file_size": len(file)}
+
+
+@app.post("/uploadfile")
+async def create_upload_file(file: UploadFile):
+    contents = await file.read()
+    return {"filename": file.filename,
+            "contents": contents}
