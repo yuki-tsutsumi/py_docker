@@ -3,6 +3,10 @@ from apiUtil import ApiUtil
 from fastapi import FastAPI,Cookie, File, UploadFile
 from minio import Minio
 import boto3
+import shutil
+from os.path import abspath
+import os
+
 app = FastAPI()
 
 
@@ -32,9 +36,7 @@ async def create_upload_file(file: UploadFile):
             "contents": contents}
 
 @app.post("/uploadfile/boto3")
-async def create_upload_file_boto3(file: UploadFile):
-    contents = await file.read()
-
+async def create_upload_file_boto3(file: UploadFile = File(...)):
     # minioに接続
     s3 = boto3.client(
         's3',
@@ -42,30 +44,19 @@ async def create_upload_file_boto3(file: UploadFile):
         aws_access_key_id='root', #docker-compose:id
         aws_secret_access_key='password', # docker-compose:pass
     )
-
-    # boto3.resourceでしか使えない
-    # # 存在チェック
-    # bucket = s3.Bucket('sample')
-    # if not bucket.creation_date:
-    #     s3.create_bucket(Bucket="sample")
-    # # MinIOのバケット出力
-    # print('バケット一覧')
-    # for bucket in s3.buckets.all():
-    #     print(bucket.name)
     
     # ファイルアップロード
-    # POSTデータを入れる方法ができていない。
-    s3.upload_file('./sample.json', "sample", file.filename)
+    file_name = file.filename
+    file_full_path = abspath(file_name)
+    with open(file_name, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+    s3.upload_file(file_full_path, "sample", file.filename)
 
-    object_list = s3.list_objects(Bucket="sample").get("Contents")
-    print(object_list)
-
-
-    return {"filename": file.filename,
-            "contents": contents}
+    os.remove(file_full_path)
+    return {"filename": file.filename}
 
 @app.post("/uploadfile/minio")
-async def create_upload_file_boto3(file: UploadFile):
+async def create_upload_file_minio(file: UploadFile):
     contents = await file.read()
 
     # minioに接続
