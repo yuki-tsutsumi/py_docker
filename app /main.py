@@ -1,13 +1,15 @@
 from typing import Union,Optional
 from apiUtil import ApiUtil
-from fastapi import FastAPI,Cookie, File, UploadFile
+from fastapi import FastAPI,Cookie, File, UploadFile,Body
+from database import db
 from minio import Minio
 import boto3
 import shutil
 from os.path import abspath
 import os
 import pika
-import json
+from bson.json_util import dumps, loads
+from bson.objectid import ObjectId
 
 app = FastAPI()
 
@@ -100,3 +102,29 @@ def add_job(message: str):
 
     return {"send": message}
 
+@app.post('/mongo/add')
+def create_post(body=Body(...)):
+    post = body['payload']
+    db.posts.insert_one(post)
+    return {'post': "ok"}
+
+@app.get('/mongo/get')
+def read_post():
+    db_post = db.posts.find_one()
+    return {'item': dumps(db_post)}
+
+@app.put('/mongo/update')
+def update_post(body=Body(...)):
+    post = body['payload']
+    _id = post['_id']
+    title = post['title']
+    text = post['text']
+    db.posts.update_one(
+        {'_id': ObjectId(_id)},
+        {'$set':
+            {
+                "title": title, 'text': text
+            }
+        }
+    )
+    return {'update': "ok"}
