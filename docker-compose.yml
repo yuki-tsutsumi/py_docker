@@ -33,6 +33,17 @@ services:
     ports:
       - 9000:9000
       - 9001:9001
+  
+  rabbitmq:
+    image: 'rabbitmq:3.6-management-alpine'
+    container_name: "rabbitmq"
+    ports:
+      - 5672:5672
+      - 15672:15672
+
+  consumer:
+    container_name: consumer
+    build: ./consumer
 
 volumes:
   redis_store:
