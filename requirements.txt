@@ -4,4 +4,3 @@ redis
 python-multipart
 minio
 boto3
-pika
