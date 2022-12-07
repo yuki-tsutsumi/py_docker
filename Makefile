@@ -21,3 +21,7 @@ stop: ## alias docker-compose stop
 .PHONY: kvs
 kvs: ## Attach a kvs container.
 	docker compose exec kvs redis-cli
+
+.PHONY: mongodb
+mongodb: ## Attach a mongodb container.
+	docker compose exec mongodb mongo -u root -proot
