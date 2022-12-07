@@ -41,5 +41,9 @@ services:
       - 5672:5672
       - 15672:15672
 
+  consumer:
+    container_name: consumer
+    build: ./consumer
+
 volumes:
   redis_store:
