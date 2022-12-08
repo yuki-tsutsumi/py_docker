@@ -10,6 +10,7 @@ import os
 import pika
 from bson.json_util import dumps, loads
 from bson.objectid import ObjectId
+import json
 
 app = FastAPI()
 
@@ -105,6 +106,7 @@ def add_job(message: str):
 @app.post('/mongo/add')
 def create_post(body=Body(...)):
     post = body['payload']
+    print(post)
     db.posts.insert_one(post)
     return {'post': "ok"}
 
@@ -130,3 +132,20 @@ def update_post(body=Body(...)):
     return {'update': "ok"}
 
 
+# 受け取ったファイルをストレージ（minio）,キュー(rabbiymq),データベース(mongo)に格納
+@app.post('/sample/recieve')
+def sample_recieve(file: UploadFile = File(...)):
+    api_util = ApiUtil()
+
+    #ストレージにファイルをアップロード
+    item_id_file_name = api_util.file_uploder(file)
+
+    #キューにitem_idをアップロード
+    api_util.queue_uploader()
+
+    #データベースにitem_idを格納
+    response = {"item_id":item_id_file_name}
+    print(response)
+    api_util.create_items(json.loads(json.dumps(response)))
+
+    return response
