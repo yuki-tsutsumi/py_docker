@@ -1,1 +1,4 @@
 __pycache__
+mongo_db/db/*
+mongo_db/configdb/*
+mongo_db/mongo-init.js
