@@ -10,6 +10,13 @@ services:
       - 8080:8080
     depends_on:
       - kvs
+      - mongodb
+    environment:
+      MONGO_DATABASE_NAME: mongodb
+      MONGO_DATABASE_USER: root
+      MONGO_DATABASE_PASSWORD: root
+      MONGO_DATABASE_CONTAINER_NAME: mongo_db
+      MONGO_DATABASE_PORT: 27017
 
   kvs:
     image: redis:7.0.5-alpine
@@ -44,6 +51,22 @@ services:
   consumer:
     container_name: consumer
     build: ./consumer
+
+  mongodb:
+    container_name: mongo_db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    build:
+      context: .
+      dockerfile: ./mongo_db/Dockerfile
+    ports:
+      - 27017:27017
+    tty: true
+    volumes:
+      - ./mongo_db/db:/data/db
+      - ./mongo_db/configdb:/data/configdb
+      - ./mongo_db/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
 
 volumes:
   redis_store:
