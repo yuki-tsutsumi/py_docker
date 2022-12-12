@@ -11,6 +11,7 @@ import pika
 from bson.json_util import dumps, loads
 from bson.objectid import ObjectId
 import json
+from tasks import add
 
 app = FastAPI()
 
@@ -149,3 +150,13 @@ def sample_recieve(file: UploadFile = File(...)):
     api_util.create_items(json.loads(json.dumps(response)))
 
     return response
+
+# タスクで保存したデータをmonogdbから取得
+@app.post('/celery/get')
+def sample_celery():
+    task_result = add.delay(22,88)
+    print("=================== "+task_result.id)
+    from time import sleep
+    sleep(2)
+    res = db.celery_taskmeta.find_one({"_id":task_result.id})
+    return dumps(res)

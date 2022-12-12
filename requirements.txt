@@ -6,3 +6,4 @@ minio
 boto3
 pika
 pymongo
+celery==5.2.7

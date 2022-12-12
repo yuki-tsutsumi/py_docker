@@ -4,7 +4,7 @@ services:
   api:
     container_name: "api"
     volumes:
-      - ./app :/app
+      - ./app:/app
     build: .
     ports:
       - 8080:8080
@@ -17,6 +17,15 @@ services:
       MONGO_DATABASE_PASSWORD: root
       MONGO_DATABASE_CONTAINER_NAME: mongo_db
       MONGO_DATABASE_PORT: 27017
+
+  worker:
+    container_name: "worker"
+    volumes:
+      - ./app/tasks.py:/app/tasks.py
+    build: .
+    depends_on:
+      - api
+    command: celery -A tasks worker --loglevel=info --concurrency=5
 
   kvs:
     image: redis:7.0.5-alpine
