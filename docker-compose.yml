@@ -17,15 +17,16 @@ services:
       MONGO_DATABASE_PASSWORD: root
       MONGO_DATABASE_CONTAINER_NAME: mongo_db
       MONGO_DATABASE_PORT: 27017
+    command: uvicorn app.main:app --reload --host 0.0.0.0 --port 8080
 
   worker:
     container_name: "worker"
     volumes:
-      - ./app/tasks.py:/app/tasks.py
+      - ./app/app/tasks.py:/app/app/tasks.py
     build: .
     depends_on:
       - api
-    command: celery -A tasks worker --loglevel=info --concurrency=5
+    command: celery -A app.tasks worker --loglevel=info --concurrency=5
 
   kvs:
     image: redis:7.0.5-alpine
