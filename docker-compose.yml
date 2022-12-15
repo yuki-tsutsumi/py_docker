@@ -11,12 +11,8 @@ services:
     depends_on:
       - kvs
       - mongodb
-    environment:
-      MONGO_DATABASE_NAME: mongodb
-      MONGO_DATABASE_USER: root
-      MONGO_DATABASE_PASSWORD: root
-      MONGO_DATABASE_CONTAINER_NAME: mongo_db
-      MONGO_DATABASE_PORT: 27017
+    env_file:
+      - env/app.env
     #gunicornによるreloadがが効かないので一旦uvicornに戻す
     # command: "gunicorn --worker-class uvicorn.workers.UvicornWorker  --reload --config gunicorn_conf.py app.main:app"
     command: uvicorn app.main:app --reload  --host 0.0.0.0 --port 8080
@@ -26,6 +22,8 @@ services:
     volumes:
       - ./app/app/tasks.py:/app/app/tasks.py
     build: .
+    env_file:
+      - env/app.env
     depends_on:
       - api
     command: celery -A app.tasks worker --loglevel=info --concurrency=5
