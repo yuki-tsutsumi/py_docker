@@ -10,7 +10,7 @@ import pika
 from app.database import db
 class ApiUtil:
 
-    kvs = redis.Redis(host='kvs', port=6379, db=0)
+    kvs = redis.Redis(host=os.environ.get("KVS_HOST"), port=os.environ.get("KVS_PORT"), db=0)
 
     EXPIRE = 60*60
     REDIS_KEY_ID = "id"
@@ -19,9 +19,9 @@ class ApiUtil:
     # minioに接続
     s3 = boto3.client(
         's3',
-        endpoint_url='http://minio:9000',
-        aws_access_key_id='root', #docker-compose:id
-        aws_secret_access_key='password', # docker-compose:pass
+        endpoint_url=os.environ.get("MINIO_SERVER_URL"),
+        aws_access_key_id=os.environ.get("AWS_ACCESS_KEY_ID"), #docker-compose:id
+        aws_secret_access_key=os.environ.get("AWS_SEACRET_ACCESS_KEY"), # docker-compose:pass
     )
 
     item_id = None
