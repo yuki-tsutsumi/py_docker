@@ -6,10 +6,7 @@ import shutil
 from os.path import abspath
 import os
 
-router = APIRouter(
-    prefix='/uploadfile',
-    tags=['uploadfile']
-)
+router = APIRouter()
 
 @router.post("/files")
 async def create_file(file: bytes = File()):

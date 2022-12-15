@@ -3,10 +3,7 @@ from typing import Optional
 from app.apiUtil import ApiUtil
 from fastapi import Cookie
 
-router = APIRouter(
-    prefix='/activate',
-    tags=['activate']
-)
+router = APIRouter()
 
 @router.post("/")
 def get_activate(accesskey: Optional[str] = Cookie(None)):

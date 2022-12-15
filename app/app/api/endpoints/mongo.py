@@ -4,10 +4,7 @@ from app.database import db
 from bson.json_util import dumps
 from bson.objectid import ObjectId
 
-router = APIRouter(
-    prefix='/mongo',
-    tags=['mongo']
-)
+router = APIRouter()
 
 @router.post('/add')
 def create_post(body=Body(...)):

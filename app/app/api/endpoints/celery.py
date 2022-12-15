@@ -3,10 +3,7 @@ from app.database import db
 from bson.json_util import dumps
 from app.tasks import add
 
-router = APIRouter(
-    prefix='/celery',
-    tags=['celery']
-)
+router = APIRouter()
 
 # タスクで保存したデータをmonogdbから取得
 @router.post('/get')

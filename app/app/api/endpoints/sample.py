@@ -4,10 +4,7 @@ from fastapi import File, UploadFile
 import pika
 import json
 
-router = APIRouter(
-    prefix='/sample',
-    tags=['sample']
-)
+router = APIRouter()
 
 # RabbitMQ用
 @router.get("/{message}")
