@@ -7,7 +7,7 @@ import os
 import shutil
 from os.path import abspath
 import pika
-from database import db
+from app.database import db
 class ApiUtil:
 
     kvs = redis.Redis(host='kvs', port=6379, db=0)

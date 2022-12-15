@@ -1,7 +1,7 @@
 from typing import Union,Optional
-from apiUtil import ApiUtil
+from app.apiUtil import ApiUtil
 from fastapi import FastAPI,Cookie, File, UploadFile,Body
-from database import db
+from app.database import db
 from minio import Minio
 import boto3
 import shutil
@@ -11,7 +11,7 @@ import pika
 from bson.json_util import dumps, loads
 from bson.objectid import ObjectId
 import json
-from tasks import add
+from app.tasks import add
 
 app = FastAPI()
 
