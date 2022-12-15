@@ -17,7 +17,9 @@ services:
       MONGO_DATABASE_PASSWORD: root
       MONGO_DATABASE_CONTAINER_NAME: mongo_db
       MONGO_DATABASE_PORT: 27017
-    command: "gunicorn --worker-class uvicorn.workers.UvicornWorker  --reload --config gunicorn_conf.py app.main:app"
+    #gunicornによるreloadがが効かないので一旦uvicornに戻す
+    # command: "gunicorn --worker-class uvicorn.workers.UvicornWorker  --reload --config gunicorn_conf.py app.main:app"
+    command: uvicorn app.main:app --reload  --host 0.0.0.0 --port 8080
 
   worker:
     container_name: "worker"
