@@ -13,8 +13,6 @@ BROKER_URL = "%s://%s:%s@%s:%d" % (
     os.environ.get("BROKER_PROTOCOL"),os.environ.get("BROKER_USER"),
     os.environ.get("BROKER_PASSWORD"), os.environ.get("BROKER_HOST"), 
     int(os.environ.get("BROKER_PORT")))
-print(BACKEND_URL)
-print(BROKER_URL)
 app = Celery('tasks', backend=BACKEND_URL,
                         broker='amqp://guest:guest@rabbitmq:5672')
 

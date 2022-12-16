@@ -42,7 +42,6 @@ def sample_recieve(file: UploadFile = File(...)):
 
     #データベースにitem_idを格納
     response = {"item_id":item_id_file_name}
-    print(response)
     api_util.create_items(json.loads(json.dumps(response)))
 
     return response

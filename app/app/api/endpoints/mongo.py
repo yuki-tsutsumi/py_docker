@@ -10,7 +10,6 @@ router = APIRouter()
 @router.post('/add')
 def create_post(body=Body(...)):
     post = body['payload']
-    print(post)
     db.posts.insert_one(post)
     return {'post': "ok"}
 
