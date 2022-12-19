@@ -8,6 +8,10 @@ import shutil
 from os.path import abspath
 import pika
 from app.database import db
+from app.api.exception.app_exception import AppException
+from bson.json_util import dumps
+from bson.objectid import ObjectId
+
 class ApiUtil:
 
     kvs = redis.Redis(host=os.environ.get("KVS_HOST"), port=os.environ.get("KVS_PORT"), db=0)
@@ -92,3 +96,10 @@ class ApiUtil:
     
     def create_items(self,item):
         db.items.insert_one(item)
+    
+    def getOne(self,id:str):
+        db_post = db.posts.find_one({"_id":ObjectId(id)})
+        if not db_post:
+            raise AppException(201,"NOT_FOUND_DATA")
+        return {'item': dumps(db_post)}
+
