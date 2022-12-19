@@ -5,14 +5,15 @@ from bson.json_util import dumps
 from bson.objectid import ObjectId
 from app.api.exception.app_exception import AppException
 from app.apiUtil import ApiUtil
+from app.api.model.payload import Payload,Posts
 
 router = APIRouter()
 
 @router.post('/add')
-def create_post(body=Body(...)):
-    post = body['payload']
-    db.posts.insert_one(post)
-    return {'post': "ok"}
+def create_post(payload:Payload):
+    document = payload.dict()['payload']
+    post_id = db.posts.insert_one(document).inserted_id
+    return {'post': str(post_id)}
 
 @router.get('/get/list')
 def read_post():
