@@ -13,4 +13,4 @@ class Posts(BaseModel):
 
 
 class Payload(BaseModel):
-    payload: Posts | None
+    payload: Posts

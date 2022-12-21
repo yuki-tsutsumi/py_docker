@@ -1,5 +1,5 @@
-ARG python_image_v="python:3.10"
-# python3.10のイメージをダウンロード
+ARG python_image_v="python:3.9"
+# python3.9のイメージをダウンロード
 FROM ${python_image_v}
 
 ARG work_dir="/app"

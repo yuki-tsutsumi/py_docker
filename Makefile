@@ -20,7 +20,7 @@ stop: ## alias docker-compose stop
 
 .PHONY: api
 api: ## Attach a api container
-	docker compose exec api /bin/sh
+	docker compose exec api bash
 
 .PHONY: kvs
 kvs: ## Attach a kvs container.
