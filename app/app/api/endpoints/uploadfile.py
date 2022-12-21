@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter,HTTPException
 from fastapi import File, UploadFile
 from minio import Minio
 import boto3
@@ -15,6 +15,8 @@ async def create_file(file: bytes = File()):
 
 @router.post("/uploadfiles")
 async def create_upload_file(file: UploadFile):
+    if file.content_type != 'application/json':
+        raise HTTPException(422,"Other application/json type is not usage file")
     contents = await file.read()
     return {"filename": file.filename,
             "contents": contents}
