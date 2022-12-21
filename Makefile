@@ -20,7 +20,7 @@ stop: ## alias docker-compose stop
 
 .PHONY: api
 api: ## Attach a api container
-	docker compose exec api /bin/sh
+	docker compose exec api bash
 
 .PHONY: kvs
 kvs: ## Attach a kvs container.
@@ -33,3 +33,7 @@ mongodb: ## Attach a mongodb container.
 .PHONY: queue
 queue: ## start a queue container.
 	docker-compose run --rm consumer python consumer.py
+
+.PHONY: test
+test: ## start a all test.
+	docker-compose run --rm api pytest
