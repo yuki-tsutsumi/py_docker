@@ -5,7 +5,7 @@ from fastapi import Cookie
 
 router = APIRouter()
 
-@router.post("/")
+@router.post("")
 def get_activate(accesskey: Optional[str] = Cookie(None)):
     newActivate = ApiUtil()
     accessKeyVal = newActivate.activate(accesskey)
