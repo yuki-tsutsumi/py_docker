@@ -32,7 +32,7 @@ class ApiUtil:
 
     def activate(self,cookieVal):
         if self.getAccessKey(cookieVal) and self.getRedis(self.REDIS_KEY_ID):
-            raise HTTPException(status_code=status.HTTP_200_OK,detail=f"USER_ALREADY_ACTIVATED ")
+            raise HTTPException(status_code=status.HTTP_200_OK,detail=f"USER_ALREADY_ACTIVATED")
         accessKey = str(uuid.uuid4())
         redisVal = {'id':''}
         self.setAccessKey(accessKey)
