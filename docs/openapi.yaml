@@ -1,0 +1,62 @@
+openapi: '3.0.2'
+
+info:
+  # API に関する情報をまとめる
+  title: 'sample APIs'
+  version: '0.0.1'
+
+servers:
+  # 実際に API が配備されている URL を載せる
+  - url: 'http://localhost:8080/'
+    description: 'API サーバー'
+paths:
+  '/':
+    get:
+      tags:
+       - default
+      summary: 'Hello world'
+      responses:
+        '200':
+          description: OK.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Hello:
+                    type: string
+                    format: int64
+                    example: "World"
+  '/item/{id}':
+    get:
+      tags:
+        - item
+      summary: 'itemのサンプル'
+      parameters:
+        - in: path
+          name: item_id
+          required: true
+          description: item_id
+          schema:
+            type : integer
+        - in: query
+          name: q
+          schema:
+            type: string
+          description: query
+      responses:
+        '200':
+          description: OK.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  item_id:
+                    type: integer
+                    format: int64
+                    example: 1
+                  q:
+                    type: string
+                    format: string
+                    example: "test"
