@@ -15,6 +15,7 @@ paths:
       tags:
        - default
       summary: 'Hello world'
+      operationId: getRoot
       responses:
         '200':
           description: OK.
@@ -32,9 +33,10 @@ paths:
       tags:
         - item
       summary: 'itemのサンプル'
+      operationId: getItems
       parameters:
         - in: path
-          name: item_id
+          name: id
           required: true
           description: item_id
           schema:
