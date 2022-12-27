@@ -78,5 +78,15 @@ services:
       - ./mongo_db/configdb:/data/configdb
       - ./mongo_db/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
 
+  swagger-ui:
+    image: swaggerapi/swagger-ui
+    container_name: "swagger-ui"
+    volumes:
+      - ./docs/openapi.yaml:/openapi.yaml
+    environment:
+      SWAGGER_JSON: /openapi.yaml
+    ports:
+      - "9002:8080"
+
 volumes:
   redis_store:
