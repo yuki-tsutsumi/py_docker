@@ -35,6 +35,10 @@ paths:
       summary: 'itemのサンプル'
       operationId: getItems
       parameters:
+        - in: header
+          name: Accept-Language
+          schema:
+            $ref: '#/components/headers/Accept-Language'
         - in: path
           name: id
           required: true
@@ -62,3 +66,11 @@ paths:
                     type: string
                     format: string
                     example: "test"
+components:
+  headers:
+    Accept-Language:
+      schema:
+        type: string
+        description: |
+          ja: 
+          example: ja
