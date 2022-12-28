@@ -4,6 +4,7 @@ import boto3
 import os
 from pathlib import Path
 import tempfile
+import pytest
 
 from app.main import app
 
@@ -28,8 +29,16 @@ def create_tmp_file(suffix,contents):
     name = path.split('/')[-1]
     return {"name":name,"path":path}
 
-def test_read_minio_テキスト_正常系():
-    tmp_file = create_tmp_file('.txt','Hello Python')
+@pytest.fixture(params=[
+    ('.json', '{"test":"test"}'), 
+    ('.text', "test"), 
+    ('.png', "aaaaaaaaaaaaaaaa")
+])
+def file_context(request):
+    return (request.param[0], request.param[1])
+
+def test_read_minio_テキスト_正常系(file_context):
+    tmp_file = create_tmp_file(file_context[0],file_context[1])
     name = tmp_file["name"]
     path = tmp_file["path"]
 
@@ -40,28 +49,6 @@ def test_read_minio_テキスト_正常系():
     os.unlink(path)
 
     response = client.post("/uploadfile/boto3",files=files)
-    assert response.status_code == 200
-    assert response.json()["filename"] == name
-    # minioにファイルが格納されているか
-    exists = s3.get_object(Bucket='sample',Key=name)
-    assert exists
-
-    # minioのデータを削除
-    s3.delete_object(Bucket='sample',Key=name)
-
-def test_read_minio_json_正常系():
-    tmp_file = create_tmp_file('.json','{"name":"test"}')
-    name = tmp_file["name"]
-    path = tmp_file["path"]
-
-    upload_file = Path(path)
-    files = {'file': upload_file.open('rb')}
-
-    # tmpファイルを展開したので削除
-    os.unlink(path)
-
-    response = client.post("/uploadfile/boto3",files=files)
-    # レスポンス内容が正しいか
     assert response.status_code == 200
     assert response.json()["filename"] == name
     # minioにファイルが格納されているか
