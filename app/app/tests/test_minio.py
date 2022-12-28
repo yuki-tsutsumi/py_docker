@@ -42,6 +42,12 @@ def test_read_minio_テキスト_正常系():
     response = client.post("/uploadfile/boto3",files=files)
     assert response.status_code == 200
     assert response.json()["filename"] == name
+    # minioにファイルが格納されているか
+    exists = s3.get_object(Bucket='sample',Key=name)
+    assert exists
+
+    # minioのデータを削除
+    s3.delete_object(Bucket='sample',Key=name)
 
 def test_read_minio_json_正常系():
     tmp_file = create_tmp_file('.json','{"name":"test"}')
@@ -55,7 +61,12 @@ def test_read_minio_json_正常系():
     os.unlink(path)
 
     response = client.post("/uploadfile/boto3",files=files)
+    # レスポンス内容が正しいか
     assert response.status_code == 200
     assert response.json()["filename"] == name
+    # minioにファイルが格納されているか
+    exists = s3.get_object(Bucket='sample',Key=name)
+    assert exists
 
-
+    # minioのデータを削除
+    s3.delete_object(Bucket='sample',Key=name)
