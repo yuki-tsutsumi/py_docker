@@ -89,3 +89,11 @@ components:
           format: int64
           minimum: 2
           example: 20
+    Payload: # モデル名
+      allOf:
+        - type: object
+          required:
+            - payload
+          properties:
+            payload:
+              $ref: '#/components/schemas/Post'
