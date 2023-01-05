@@ -19,6 +19,7 @@ redis = "^4.4.0"
 python-multipart = "^0.0.5"
 pytest = "^7.2.0"
 httpx = "^0.23.1"
+datamodel-code-generator = "^0.15.0"
 
 [build-system]
 requires = ["poetry-core"]
