@@ -37,3 +37,7 @@ queue: ## start a queue container.
 .PHONY: test
 test: ## start a all test.
 	docker-compose run --rm api pytest
+
+.PHONY: openapi
+openapi: ## generate models from openapi.
+	docker run --rm -v ${PWD}/app/docs:/app/docs openapitools/openapi-generator-cli generate -i ./app/docs/openapi.yaml -g python-fastapi -o /app/docs/ --global-property models --skip-validate-spec
