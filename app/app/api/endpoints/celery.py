@@ -1,15 +1,15 @@
 from fastapi import APIRouter
 from app.database import db
-from bson.json_util import dumps
 from app.tasks import add
+from app.api.model.plus import Plus
 
 router = APIRouter()
 
 # タスクで保存したデータをmonogdbから取得
-@router.post('/get')
-def sample_celery():
-    task_result = add.delay(22,88)
+@router.post('/get_mongo_data')
+def sample_celery(plus:Plus):
+    task_result = add.delay(plus.dict()["a"],plus.dict()["b"])
     from time import sleep
-    sleep(2)
+    sleep(0.5)
     res = db.celery_taskmeta.find_one({"_id":task_result.id})
-    return dumps(res)
+    return res

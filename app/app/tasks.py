@@ -14,10 +14,8 @@ BROKER_URL = "%s://%s:%s@%s:%d" % (
     os.environ.get("BROKER_PASSWORD"), os.environ.get("BROKER_HOST"), 
     int(os.environ.get("BROKER_PORT")))
 app = Celery('tasks', backend=BACKEND_URL,
-                        broker='amqp://guest:guest@rabbitmq:5672')
+                        broker=BROKER_URL)
 
 @app.task
 def add(x, y):
-    # from time import sleep
-    # sleep(5)
     return x + y
