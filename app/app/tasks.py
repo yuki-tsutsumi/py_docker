@@ -18,6 +18,4 @@ app = Celery('tasks', backend=BACKEND_URL,
 
 @app.task
 def add(x, y):
-    # from time import sleep
-    # sleep(5)
     return x + y
