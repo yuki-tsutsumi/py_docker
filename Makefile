@@ -39,5 +39,5 @@ test: ## start a all test.
 	docker-compose run --rm api pytest
 
 .PHONY: openapi
-openapi: ## generate models from openapi.
-	docker run --rm -v ${PWD}/app/docs:/app/docs openapitools/openapi-generator-cli generate -i ./app/docs/openapi.yaml -g python-fastapi -o /app/docs/ --global-property models --skip-validate-spec
+openapi: ## generate models from openapi. モデルディレクトリの横に一旦置いておく
+	docker run --rm -v ${PWD}/app/docs/openapi.yaml:/app/docs/openapi.yaml -v ${PWD}/app/app/api/models:/app/docs/src/openapi_server/models openapitools/openapi-generator-cli generate -i ./app/docs/openapi.yaml -g python-fastapi -o /app/docs/ --global-property models --skip-validate-spec

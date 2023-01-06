@@ -88,6 +88,7 @@ components:
           type: integer
           format: int64
           minimum: 2
+          maximum: 10
           example: 20
     Payload: # モデル名
       allOf:
