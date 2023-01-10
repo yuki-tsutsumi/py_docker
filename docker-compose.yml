@@ -82,7 +82,7 @@ services:
     image: swaggerapi/swagger-ui
     container_name: "swagger-ui"
     volumes:
-      - ./docs/openapi.yaml:/openapi.yaml
+      - ./app/docs/openapi.yaml:/openapi.yaml
     environment:
       SWAGGER_JSON: /openapi.yaml
     ports:

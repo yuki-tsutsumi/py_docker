@@ -74,3 +74,26 @@ components:
         description: |
           ja: 
           example: ja
+  schemas: # スキーマオブジェクトの定義
+    Post: # モデル名
+      type: object # 型
+      required: # 必須フィールド
+        - title
+      properties:
+        title: # プロパティ名
+          type: string # 型 
+          minLength: 2
+          maxLength: 10
+        text:
+          type: integer
+          format: int64
+          minimum: 2
+          example: 20
+    Payload: # モデル名
+      allOf:
+        - type: object
+          required:
+            - payload
+          properties:
+            payload:
+              $ref: '#/components/schemas/Post'
